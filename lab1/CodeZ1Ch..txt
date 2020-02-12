@@ -1,0 +1,86 @@
+#include <iostream>
+#include <string>
+#include "stdio.h"
+#include "fstream"
+#include "ctime"
+
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	srand(time(NULL));
+
+	int* m, f;
+
+	f = rand() + 1;//Задаём неизвестное количество чисел 
+	cout << "Количество чисел в файле: " << f << endl;
+	m = new int[f];
+	for (int i = 0; i < f; i++)
+	{
+		m[i] = rand() + 1;//Элементы массива не смогут принимать нулевое значение
+	}
+
+	ofstream file("C:\\Users\\MubaTwo\\Desktop\\Lab1\\GG.txt");//Запись в файл
+	if (!file)
+	{
+		cout << "Ошибка открытия файла.";
+	}
+
+	else
+	{
+		cout << "\nФайл открыт.\n";
+	}
+
+	for (int i = 0; i < f; i++)//Сортируем неизвестное количество чисел в файле
+	{
+		for (int i = 0; i < f - 1; i++)
+		{
+			if (m[i] > m[i + 1])
+			{
+				swap(m[i], m[i + 1]);
+			}
+		}
+	}
+
+	for (int i = 0; i < f; i++)//Записываем в файл неизвестное количество чисел
+	{
+		file << m[i] << endl;
+	}
+	
+	for (int i = 0; i < f; i++)
+	{
+		m[i] = 0;//Зануляем все элемента массива
+	}
+
+	ifstream file1("C:\\Users\\MubaTwo\\Desktop\\Lab1\\GG.txt");//Чтение файла
+	if (!file1)
+	{
+		cout << "Ошибка чтения файла.";
+	}
+
+	else
+	{
+		cout << "\nФайл прочитан.\n\n";
+	}
+
+	for (int i = 0; i < f; i++)
+	{
+		file1 >> m[i];//Даём значение числа элементу массива
+	}
+
+	for (int i = 0; i < f; i++)//Выводим отсортированные числа на экран
+	{
+		printf("m[%d] > %d\n", i, m[i]);
+	}
+
+
+
+
+	file.close();
+	file1.close();
+
+	delete[] m;
+
+	return 0;
+}
