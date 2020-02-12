@@ -1,0 +1,40 @@
+#include <iostream>
+#include <string>
+#include "stdio.h"
+#include "fstream"
+#include "ctime"
+
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	srand(time(NULL));
+
+	int* m, a, b, g, k, size;
+
+	cout << "Задайте интервал [a, b]:\n";
+	cin >> a;
+	cin >> b;
+
+	size = fabs(a - b);//Размерность массива в связи с интервалом
+	m = new int[size];
+	
+	printf("Заданный диапазон: [%d, %d]", a, b);
+
+	for (int i = a, g = 0; i < b; i++, g++)//Заполняем массив случайными числами из интервала
+	{
+		m[g] = a + rand()%((b+1)-a);
+	}
+	
+	for (int i = 0; i < size; i++)
+	{
+		printf("\nm[%d] > %d\n", i, m[i]);
+	}
+	
+	/*Сжатие массива*/
+
+	cout << "\nEnter k: ";
+	cin >> k;
+	
+}
