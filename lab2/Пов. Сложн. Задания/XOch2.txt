@@ -1,0 +1,172 @@
+#include <ctime>
+#include <iostream>
+#include <windows.h>
+#include <string>
+#include "stdio.h"
+
+
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "ru");
+    int** m;
+    char** a, ** c;
+    int rows, cols;//строки, столбцы
+
+    rows = cols = 3;//строки = столбцы
+    printf("Игра в %dx%d:", rows, cols);
+    cout << "\n-----------------------------------------------------------------------\n";
+
+    m = new int* [rows];//Создаём динамический массив указателей размером количества СТРОК
+    a = new char* [rows];
+    c = new char* [rows];
+
+    for (int i = 0; i < rows; i++)
+    {
+        m[i] = new int[cols];//Присваиваем элементам указателей новые динамические массивы размером количества СТОЛБЦОВ
+    }
+
+    int n = 0;//Позиция
+    for (int i = 0; i < rows; i++)//Заполняем двумерный динамический массив числами
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            m[i][j] = ++n;//Ограничиваем значение до 10
+        }
+    }
+
+    /////////////////////////////// CHAR a /////////////////////////////
+    for (int i = 0; i < rows; i++)
+    {
+        a[i] = new char[cols];//Присваиваем элементам указателей новые динамические массивы размером количества СТОЛБЦОВ
+    }
+
+    for (int i = 0; i < rows; i++)//Заполняем двумерный динамический массив
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            a[i][j] = '*';
+        }
+    }
+    //////////////////////////////// CHAR c ////////////////////////////
+    for (int i = 0; i < rows; i++)
+    {
+        c[i] = new char[cols];//Присваиваем элементам указателей новые динамические массивы размером количества СТОЛБЦОВ
+    }
+
+    for (int i = 0; i < rows; i++)//Заполняем двумерный динамический массив
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            c[i][j] = '*';
+        }
+    }
+    ////////////////////////////////////////////////////////////////////
+
+    for (int i = 0; i < rows; i++)//Выводим на экран двумерный динамический массив
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            cout << m[i][j] << "\t";
+        }
+        cout << endl << endl << endl;
+    }
+
+    //////////////////////////// ИНТЕРАКТИВ /////////////////////////////////
+    bool game;
+    int h;//Номер хода
+    string p1, p2;
+    p1 = "[ИГРОК]: ";
+    p2 = "[КОМПЬЮТЕР]: ";
+    game = true;
+    h = 2;
+    int position;
+    char cross, null;
+
+    cout << "\nХод: " << 1 << endl;
+    cout << p1 << endl << endl;
+    cout << "Выберите позицию[1 - 9]: ";
+    cin >> position;
+
+    if (position < 1 || position > 9)
+    {
+        while (position < 1 || position > 9)
+        {
+            cout << "Выберите позицию от 1 до 9: ";
+            cin >> position;
+            cout << endl;
+        }
+    }
+
+    for (int i = 0; i < rows; i++)//1 ход игрока
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (position == m[i][j])
+            {
+                a[i][j] = 'X';
+                cout << a[i][j] << "\t";
+            }
+            else cout << c[i][j] << "\t";
+            c[i][j] = a[i][j];
+
+        }
+        cout << endl << endl << endl;
+    }
+
+    while (game == true)
+    {
+        cout << "\nХод: " << h << endl;
+
+        if (h % 2 != 0)//Ход игрока
+        {
+            cout << p1 << endl << endl;
+            cout << "Выберите позицию[1 - 9]: ";
+            cin >> position;
+
+            if (position < 1 || position > 9)
+            {
+                while (position < 1 || position > 9)
+                {
+                    cout << "Выберите позицию от 1 до 9: ";
+                    cin >> position;
+
+                    // Здесь добавить условие
+                }
+            }
+
+            for (int i = 0; i < rows; i++)//Размещаем крестик
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    if (position == m[i][j])
+                    {
+                        a[i][j] = 'X';
+                        cout << a[i][j] << "\t";
+                    }
+                    else cout << c[i][j] << "\t";
+                    c[i][j] = a[i][j];
+                }
+                cout << endl << endl << endl;
+            }
+        }
+        if (h % 2 == 0)//Ход ИИ
+        {
+            cout << p2;
+        }
+        h++;
+    }
+
+
+    for (int i = 0; i < rows; i++)//Удаление динамических массивов
+    {
+        delete[] m[i];
+    }
+    for (int i = 0; i < rows; i++)//Удаление динамических массивов
+    {
+        delete[] a[i];
+    }
+    delete[] m;//Удаление *динамического массива с указателями* на *динамические массивы*
+    delete[] a;//Удаление *динамического массива с указателями* на *динамические массивы*
+}
