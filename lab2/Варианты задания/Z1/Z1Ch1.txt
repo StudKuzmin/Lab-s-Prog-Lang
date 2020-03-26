@@ -1,0 +1,113 @@
+#include <ctime>
+#include <iostream>
+#include <windows.h>
+#include <string>
+#include "stdio.h"
+
+
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "ru");
+
+    int** m;
+    int rows, cols;
+
+    cout << "Введите размерность матрицы, где 3 - 3x3, 9 - 9x9 и т.д.: ";
+    cin >> rows;
+    cols = rows;
+
+    cout << "Ваша матрица: " << rows << "x" << cols << endl;
+    Sleep(2000);
+    system("CLS");
+
+    m = new int* [rows];
+
+    int a, b;
+    cout << "Введите значения интервала [a, b]: " << endl;
+    cout << "a > ";
+    cin >> a;
+    cout << "b > ";
+    cin >> b;
+
+    if (a > b)//Меняем местами элементы
+    {
+        a = a + b;
+        b = a - b;
+        a = a - b;
+    }
+    printf("Ваш диапазон: [%d, %d]", a, b);
+    cout << endl;
+
+    HANDLE matrix = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    for (int i = 0; i < rows; i++)
+    {
+        m[i] = new int[cols];//Присваиваем элементам указателей новые динамические массивы размером количества СТОЛБЦОВ		
+    }
+
+    for (int i = 0; i < rows; i++)//Заполняем двумерный динамический массив числами
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            m[i][j] = rand() % (b - a + 1) + a;//[a, b]
+        }
+    }
+
+
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    if (rows % 2 == 0)//Чётная квадратная матрица
+    {
+        for (int i = 0; i < rows; i++)//
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                if (i <= j)//Элементы главной диагонали + выше.
+                {
+                    if (j == (rows - i))
+                    {
+                        SetConsoleTextAttribute(matrix, FOREGROUND_BLUE);
+                        cout << m[i][j] << "\t";
+                        SetConsoleTextAttribute(matrix, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+                    }
+
+                    else cout << m[i][j] << "\t";
+                
+                }
+                else cout << m[i][j] << "\t";
+
+
+
+            }
+            cout << endl << endl << endl;
+        }
+    }
+
+
+
+
+
+
+    else//Нечётная квадратная матрица
+    {
+        cout << "HET " << m[rows-1][cols-1] << endl;
+    }
+
+
+
+
+
+    
+    //////////////////////////////////////////////////////////////////////////// ОЧИСТКА //////////////////////////////////////////////////////////////////////////////////
+    for (int i = 0; i < rows; i++)//Удаление динамических массивов
+    {
+        delete[] m[i];
+    }
+
+    delete[] m;//Удаление двумерного динамического массива с указателями на динамические массивы
+
+    return 0;
+}
