@@ -1,0 +1,291 @@
+#include <ctime>
+#include <iostream>
+#include <windows.h>
+#include <string>
+#include "stdio.h"
+
+
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "ru");
+    srand(time(0));
+
+    int** m;
+    int rows, cols;
+
+    cout << "Введите размерность матрицы, где 3 - 3x3, 9 - 9x9 и т.д.: ";
+    cin >> rows;
+    cols = rows;
+
+    cout << "Ваша матрица: " << rows << "x" << cols << endl;
+    Sleep(2000);
+    system("CLS");
+
+    m = new int* [rows];
+
+    int a, b;
+    cout << "Введите значения интервала [a, b]: " << endl;
+    cout << "a > ";
+    cin >> a;
+    cout << "b > ";
+    cin >> b;
+
+    if (a > b)//Меняем местами элементы
+    {
+        a = a + b;
+        b = a - b;
+        a = a - b;
+    }
+    Sleep(500);
+    system("CLS");
+
+    printf("Ваш диапазон: [%d, %d]", a, b);
+    cout << endl;
+
+    HANDLE matrix = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    for (int i = 0; i < rows; i++)
+    {
+        m[i] = new int[cols];//Присваиваем элементам указателей новые динамические массивы размером количества СТОЛБЦОВ		
+    }
+
+    for (int i = 0; i < rows; i++)//Заполняем двумерный динамический массив числами
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            m[i][j] = rand() % (b - a + 1) + a;//[a, b]
+        }
+    }
+
+
+
+
+    ///////////////////////////////////////////////////////////////// ПРИМЕЧАНИЕ //////////////////////////////////////////////////////////////////////////////////////////
+    cout << "---------------------------------------------------------------------------------------------------------";
+    cout << "\n' ПРИМЕЧАНИЕ:\t\t\t\t\t\t\t\t\t\t\t\t'";
+    cout << "\n' 1. ";
+    SetConsoleTextAttribute(matrix, FOREGROUND_BLUE);
+    cout << "Синими ";
+    SetConsoleTextAttribute(matrix, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+    cout << "обозначаются ";
+    cout << "Элементы-границы;\t\t\t\t\t\t\t\t' ";
+    cout << "\n' 2. ";
+    SetConsoleTextAttribute(matrix, FOREGROUND_GREEN);
+    cout << "Зелёными ";
+    SetConsoleTextAttribute(matrix, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+    cout << "обозначаются ";
+    cout << "Элементы, среди которых нужно найти максимальный отрицательный элемент;\t' ";
+    cout << "\n' 3. ";
+    SetConsoleTextAttribute(matrix, FOREGROUND_RED);
+    cout << "Красными ";
+    SetConsoleTextAttribute(matrix, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+    cout << "обозначаются ";
+    cout << "Элементы, среди которых нужно найти минимальный положительный элемент;\t' ";
+    cout << "\n' 4. ";
+    cout << "Белыми ";
+    cout << "обозначаются ";
+    cout << "Элементы 'слепой зоны';\t\t\t\t\t\t\t' ";
+    cout << "\n---------------------------------------------------------------------------------------------------------";
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+    ////////////////////////////////////////////////////////////// ОСНОВНОЕ /////////////////////////////////////////////////////////////////////////////////////////////////
+    cout << endl << endl << endl << endl << endl;
+    int max, min;
+    max = -1;
+    min = b;
+    int countGREEN, countRED;
+    int countG, countR;
+    countGREEN = countRED = countG = countR = 0;
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (i <= j)//Элементы главной диагонали + выше.
+            {
+                if (j == (rows - 1 - i) || i == j)//Границы
+                {
+                    SetConsoleTextAttribute(matrix, FOREGROUND_BLUE);
+                    cout << m[i][j] << "\t";
+                    SetConsoleTextAttribute(matrix, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+                }
+
+                else if (i < j && j < (rows - 1 - i))//Верхняя зелёная область
+                {
+                    SetConsoleTextAttribute(matrix, FOREGROUND_GREEN);
+                    cout << m[i][j] << "\t";
+                    SetConsoleTextAttribute(matrix, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+
+                    if (m[i][j] < 0 && m[i][j] <= max)//Максимальный отрицательный
+                    {
+                        max = m[i][j];
+                        countG++;//Если измениться, то отрицательный элемент есть
+                    }
+
+                }
+
+                else if (i < j && j >(rows - 1 - i))//Правая красная область
+                {
+                    SetConsoleTextAttribute(matrix, FOREGROUND_RED);
+                    cout << m[i][j] << "\t";
+                    SetConsoleTextAttribute(matrix, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+
+                    if (m[i][j] > 0 && m[i][j] <= min)//Минимальный положительный элемент
+                    {
+                        min = m[i][j];
+                        countR++;//Если измениться, то положительный элемент есть
+                    }
+
+                }
+            }
+            else cout << m[i][j] << "\t";
+        }
+        cout << endl << endl << endl;
+    }
+
+    ///////////////////////////////////// СЧИТАЕМ КОЛИЧЕСТВО ОДИНАКОВЫХ MAX и MIN ////////////////////////////////////////////////////////////////////////////
+    for (int i = 0; i < rows; i++)//Считаем количество одинаковых MAX и MIN
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (i < j && j < (rows - 1 - i))//Верхняя зелёная область
+            {
+                if (m[i][j] == max) countGREEN++;
+            }
+
+            else if (i < j && j >(rows - 1 - i))//Правая красная область
+            {
+                if (m[i][j] == min) countRED++;
+            }
+
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    cout << "countGREEN: " << countGREEN << endl;
+    cout << "countRED: " << countRED << endl;
+    int count = 0;
+    int count1 = countRED;
+
+    for (int i = 0; i < rows; i++)//Меняем местами MAX и MIN
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (i < j && j < (rows - 1 - i))//Зелёная область
+            {
+                if (m[i][j] == max && countGREEN != 0 && countRED != 0)
+                {
+                    if (countGREEN < countRED)
+                    {
+                        m[i][j] = min;
+                        count++;
+                    }
+
+                    if (countGREEN > countRED&& count1 != 0)
+                    {
+                        m[i][j] = min;
+                        count++;
+                        count1--;
+                    }
+
+                    if (countGREEN == countRED)
+                    {
+                        m[i][j] = min;
+                        count++;
+                    }
+                }
+            }
+
+            else if (i < j && j > (rows - 1 - i))//Красная область
+            {
+                if (m[i][j] == min)
+                {
+                    if (countGREEN != 0 && countRED != 0 && count != 0)
+                    {
+                        m[i][j] = max;
+                        count--;
+                    }
+                }
+            }
+        }
+    }
+
+    cout << "\n--------------------------------------------------------------------------------------------\n";
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (i <= j)//Элементы главной диагонали + выше.
+            {
+                if (j == (rows - 1 - i) || i == j)//Границы
+                {
+                    SetConsoleTextAttribute(matrix, FOREGROUND_BLUE);
+                    cout << m[i][j] << "\t";
+                    SetConsoleTextAttribute(matrix, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+                }
+
+                else if (i < j && j < (rows - 1 - i))//Верхняя зелёная область
+                {
+                    SetConsoleTextAttribute(matrix, FOREGROUND_GREEN);
+                    cout << m[i][j] << "\t";
+                    SetConsoleTextAttribute(matrix, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+
+                    if (m[i][j] < 0 && m[i][j] <= max)//Максимальный отрицательный
+                    {
+                        max = m[i][j];
+                    }
+
+                }
+
+                else if (i < j && j >(rows - 1 - i))//Правая красная область
+                {
+                    SetConsoleTextAttribute(matrix, FOREGROUND_RED);
+                    cout << m[i][j] << "\t";
+                    SetConsoleTextAttribute(matrix, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+
+                    if (m[i][j] > 0 && m[i][j] <= min)//Минимальный положительный элемент
+                    {
+                        min = m[i][j];
+                    }
+
+                }
+            }
+            else cout << m[i][j] << "\t";
+        }
+        cout << endl << endl << endl;
+    }
+
+
+
+    if (countR == 0) cout << "Положительные элементы отсутствуют в красной области." << endl;
+
+    else
+    {
+        cout << "MIN: " << min << endl;
+    }
+
+    if (countG == 0) cout << "Отрицательные элементы отсутствуют в зелёной области." << endl;
+
+    else
+    {
+        cout << "\nMAX: " << max << endl;
+    }
+
+    //////////////////////////////////////////////////////////////////////////// ОЧИСТКА //////////////////////////////////////////////////////////////////////////////////
+    for (int i = 0; i < rows; i++)//Удаление динамических массивов
+    {
+        delete[] m[i];
+    }
+
+    delete[] m;//Удаление двумерного динамического массива с указателями на динамические массивы
+
+    return 0;
+}
