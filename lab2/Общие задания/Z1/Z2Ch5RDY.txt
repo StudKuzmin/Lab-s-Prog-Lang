@@ -625,15 +625,7 @@ int main()
     for (int i = 0; i < rows; i++)//Удаление динамических массивов
     {
         delete[] m[i];
-    }
-
-    for (int i = 0; i < rows; i++)
-    {
         delete[] a[i];
-    }
-
-    for (int i = 0; i < rows; i++)
-    {
         delete[] c[i];
     }
 

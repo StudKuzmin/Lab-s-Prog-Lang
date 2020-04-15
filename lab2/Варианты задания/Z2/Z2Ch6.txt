@@ -1,0 +1,315 @@
+#include <ctime>
+#include <iostream>
+#include <windows.h>
+#include <string>
+#include <fstream>
+#include "stdio.h"
+
+
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "ru");
+
+    int** A, ** C;//Матрицы
+    int** B, ** D;//Векторы
+    int** SumAC, ** SumBD, ** SumACBD;
+    int** tr;
+    int rows, cols;
+
+    HANDLE line = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(line, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+
+    cout << "Введите количество строк: ";
+    cin >> rows;
+    cout << "Введите количество столбцов: ";
+    cin >> cols;
+
+    A = new int* [rows];
+    C = new int* [rows];
+    B = new int* [rows];
+    D = new int* [rows];
+    SumAC = new int* [rows];
+    SumBD = new int* [rows];
+    SumACBD = new int* [rows];
+    tr = new int* [rows];
+
+    ifstream fileA("C:\\Users\\MubaTwo\\Desktop\\file\\fileA.txt");//Чтение файла
+    if (!fileA)
+    {
+        cout << "Ошибка чтения файла fileA";
+    }
+
+    else
+    {
+        cout << "\nФайл прочитан fileA.";
+    }
+
+    ifstream fileC("C:\\Users\\MubaTwo\\Desktop\\file\\fileC.txt");//Чтение файла
+    if (!fileC)
+    {
+        cout << "Ошибка чтения файла fileC";
+    }
+
+    else
+    {
+        cout << "\nФайл прочитан fileC.";
+    }
+
+    ifstream fileB("C:\\Users\\MubaTwo\\Desktop\\file\\fileB.txt");//Чтение файла
+    if (!fileB)
+    {
+        cout << "Ошибка чтения файла fileB";
+    }
+
+    else
+    {
+        cout << "\nФайл прочитан fileB.";
+    }
+
+    ifstream fileD("C:\\Users\\MubaTwo\\Desktop\\file\\fileD.txt");//Чтение файла
+    if (!fileD)
+    {
+        cout << "Ошибка чтения файла fileD";
+    }
+
+    else
+    {
+        cout << "\nФайл прочитан fileD.";
+    }
+
+    Sleep(500);
+    system("CLS");
+
+
+    for (int i = 0; i < rows; i++)
+    {
+        A[i] = new int[cols];//Присваиваем элементам указателей новые динамические массивы размером количества СТОЛБЦОВ		
+        C[i] = new int[cols];
+        B[i] = new int[cols];
+        D[i] = new int[cols];
+        SumAC[i] = new int[cols];
+        SumBD[i] = new int[cols];
+        SumACBD[i] = new int[cols];
+        tr[i] = new int[cols];
+    }
+
+    ///////////////////////////////////////////////// ЗАПОЛНЕНИЕ МАССИВА /////////////////////////////////////////////////////////////
+
+    for (int i = 0; i < rows; i++)//Заполнение матриц
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            fileA >> A[i][j];
+            fileC >> C[i][j];
+        }
+    }
+
+    for (int i = 0; i < rows; i++)//Заполнение векторa B m x 1
+    {
+        for (int j = 0; j < 1; j++)
+        {
+            fileB >> B[i][j];
+        }
+    }
+
+    for (int i = 0; i < 1; i++)//Заполнение векторa D 1 x m
+    {
+        for (int j = 0; j < rows; j++)
+        {
+            fileD >> D[i][j];
+        }
+    }
+    fileA.close();
+    fileB.close();
+    fileC.close();
+    fileD.close();
+
+    ///////////////////////////////////////////// ВЫВОДИМ МАССИВЫ А, С, B, D НА ЭКРАН /////////////////////////////////////////////////////
+    SetConsoleTextAttribute(line, FOREGROUND_GREEN);
+    cout << "\n====================================================================================\n";
+    SetConsoleTextAttribute(line, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+    cout << "MatrA: " << endl;
+    for (int i = 0; i < rows; i++)//Выводим массив A на экран
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            cout << A[i][j] << "\t";
+        }
+        cout << endl << endl << endl;
+    }
+
+    cout << "\n------------------------------------------------------------------------------------\n";
+
+    cout << "MatrC: " << endl;
+    for (int i = 0; i < rows; i++)//Выводим массив C на экран
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            cout << C[i][j] << "\t";
+        }
+        cout << endl << endl << endl;
+    }
+
+    cout << "\n------------------------------------------------------------------------------------\n";
+
+    cout << "VectB: " << endl;
+    for (int i = 0; i < rows; i++)//Выводим массив B m x 1 на экран
+    {
+        for (int j = 0; j < 1; j++)
+        {
+            cout << B[i][j];
+        }
+        cout << endl << endl << endl;
+    }
+
+    cout << "\n------------------------------------------------------------------------------------\n";
+
+    cout << "VectD: " << endl;
+    for (int i = 0; i < 1; i++)//Выводим массив D 1 x m на экран
+    {
+        for (int j = 0; j < rows; j++)
+        {
+            cout << D[i][j] << "\t";
+        }
+        cout << endl << endl << endl;
+    }
+    ////////////////////////////////////////////// ТРАНСПОНИРОВАНИЕ МАТРИЦЫ С //////////////////////////////////////////////////////
+
+    for (int i = 0; i < cols; i++)
+    {
+        for (int j = 0; j < rows; j++)
+        {
+            tr[i][j] = C[j][i];
+        }
+    }
+
+    cout << "\n------------------------------------------------------------------------------------\n";
+    cout << "Транспонированная матрица С: " << endl;
+
+    for (int i = 0; i < cols; i++)
+    {
+        for (int j = 0; j < rows; j++)
+        {
+            cout << tr[i][j] << "\t";
+        }
+        cout << endl << endl << endl;
+    }
+
+    SetConsoleTextAttribute(line, FOREGROUND_GREEN);
+    cout << "\n=====================================================================================\n";
+    SetConsoleTextAttribute(line, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+
+    ////////////////////////////////////////////// ПРОИЗВЕДЕНИЕ МАТРИЦЫ А и транспонированной матрицы С //////////////////////////////////////////////////////////
+    SetConsoleTextAttribute(line, FOREGROUND_RED);
+    cout << "1) ";
+    SetConsoleTextAttribute(line, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+    cout << "Произведение матрицы А и транспонированной матрицы С:\n\n";
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < rows; j++)
+        {
+            SumAC[i][j] = 0;
+            for (int t = 0; t < cols; t++)
+            {
+                SumAC[i][j] += A[i][t] * tr[t][j];
+            }
+        }
+    }
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < rows; j++)
+        {
+            cout << SumAC[i][j] << "\t";
+        }
+        cout << endl << endl << endl;
+    }
+
+    cout << "\n------------------------------------------------------------------------------------\n";
+
+    ////////////////////////////////////////////// ПРОИЗВЕДЕНИЕ ЧИСЛА 2 и ВЕКТОРА В и транспонированного вектора D /////////////////////////////////
+    SetConsoleTextAttribute(line, FOREGROUND_RED);
+    cout << "2) ";
+    SetConsoleTextAttribute(line, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+    cout << "Произведение числа 2, вектора В и транспонированного вектора D: \n\n";
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < rows; j++)
+        {
+            SumBD[i][j] = 0;
+            for (int t = 0; t < 1; t++)
+            {
+                SumBD[i][j] += 2 * B[i][t] * D[t][j];
+            }
+        }
+    }
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < rows; j++)
+        {
+            cout << SumBD[i][j] << "\t";
+        }
+        cout << endl << endl << endl;
+    }
+
+    ////////////////////////////////////////////// ВЫЧИСЛЕНИЕ /////////////////////////////////////////////////////////////////////////
+    SetConsoleTextAttribute(line, FOREGROUND_GREEN);
+    cout << "\n=====================================================================================\n";
+    SetConsoleTextAttribute(line, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+
+    SetConsoleTextAttribute(line, FOREGROUND_RED);
+    cout << "3) ";
+    SetConsoleTextAttribute(line, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+    cout << "Сумма произведений числа 2, векторов B и D и матриц А и С:\n\n" << endl;
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < rows; j++)
+        {
+            SumACBD[i][j] = SumAC[i][j] + SumBD[i][j];
+        }
+    }
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < rows; j++)
+        {
+            cout << SumACBD[i][j] << "\t";
+        }
+        cout << endl << endl << endl;
+    }
+
+    SetConsoleTextAttribute(line, FOREGROUND_GREEN);
+    cout << "\n=====================================================================================\n";
+    SetConsoleTextAttribute(line, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
+
+    ////////////////////////////////////////////// ОЧИСТКА ////////////////////////////////////////////////////////////////////////////
+
+    for (int i = 0; i < rows; i++)
+    {
+        delete[] A[i];
+        delete[] C[i];
+        delete[] B[i];
+        delete[] D[i];
+        delete[] tr[i];
+        delete[] SumAC[i];
+        delete[] SumBD[i];
+        delete[] SumACBD[i];
+    }
+
+    delete[] A;
+    delete[] C;
+    delete[] B;
+    delete[] tr;
+    delete[] D;
+    delete[] SumAC;
+    delete[] SumBD;
+    delete[] SumACBD;
+
+    return 0;
+}
