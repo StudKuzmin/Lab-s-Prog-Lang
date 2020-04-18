@@ -1,0 +1,82 @@
+#include <ctime>
+#include <iostream>
+#include <fstream>
+#include <windows.h>
+#include "string"
+#include "stdio.h"
+
+
+using namespace std;
+int Count_Symbols_Words(char* str, int lenght)//Ищем самое длинное слово
+{
+    int max = 0;
+    int count = 0;
+    int n = 0;
+    int m = 0;
+    char *word = new char[100];
+    for (int i = 0; i < lenght; i++)
+    {
+        if (str[i] == '\n') count = 0;
+        if (str[i] != '\n')
+        {
+            count++;
+            if (max < count)
+            {
+                max = count;
+                m = i;
+                while (i > 2 && n < max)
+                {
+                    word[n] = str[m - max];
+                    n++; m++;
+                }
+            }
+        }
+
+    }
+    word[n] = '\0';
+    cout << "SLOVO: " << word << endl << endl;
+    return max;
+}
+
+void Razdelenie(char* str, int lenght)//Разделение строк на слова
+{
+    for (int i = 0; i < lenght; i++)
+    {
+        if (str[i] == ' ' || str[i] == '?' || str[i] == '!' || str[i] == '.')
+        {
+            str[i] = '\n';
+        }
+
+    }
+}
+
+void main()
+{
+    setlocale(LC_ALL, "ru");
+    srand(time(0));
+
+    char symbol;
+    char* str = new char[100];
+
+    ifstream text("C:\\Users\\MubaTwo\\Desktop\\file\\lab3\\text.txt");//Чтение
+    if (!text) cout << "Ошибка открытия файла text.txt." << endl;
+
+    int i = 0;
+    while (text.get(symbol))
+    {
+        str[i] = symbol;
+        i++;
+    }
+    str[i] = '\0';
+    text.close();
+
+    int lenght = strlen(str); cout << "Количество символов в тексте: " << lenght << endl << endl;//Количество символов всех строк
+
+    Razdelenie(str, lenght);
+    int max = Count_Symbols_Words(str, lenght);
+
+    cout << str;
+    cout << max;
+
+    
+}
