@@ -1,0 +1,88 @@
+#include <ctime>
+#include <iostream>
+#include <fstream>
+#include <windows.h>
+#include "string"
+#include "stdio.h"
+
+
+using namespace std;
+
+
+void Count_Symbols_Words(char* str, char* word, int lenght)//Ищем самое длинное слово и выводим его на экран
+{
+    int max = 0;
+    int count = 0;
+    int ws = 0;
+    for (int i = 0; i < lenght; i++)
+    {
+        if (str[i] == '\n') count = 0;
+        if (str[i] != '\n')
+        {
+            count++;
+            if (max < count)
+            {
+                max = count;
+                ws = i;
+            }
+        }
+
+    }
+
+    int j = 0;
+    ws++;
+    for (int i = ws - max; i <= ws; i++)
+    {
+        word[j] = str[i];
+        j++;
+    }
+    word[j] = '\0';
+
+    cout << "Самое длинное слово в тексте: " << word;
+    cout << "Длина слова: " << max << endl << endl;
+}
+
+void Razdelenie(char* str, int lenght)//Разделение строк на слова
+{
+    for (int i = 0; i < lenght; i++)
+    {
+        if (str[i] == ' ' || str[i] == '?' || str[i] == '!' || str[i] == '.')
+        {
+            str[i] = '\n';
+        }
+
+    }
+}
+
+void main()
+{
+    setlocale(LC_ALL, "ru");
+    srand(time(0));
+
+    char symbol;
+    char* str = new char[100];
+    char* word = new char[100];
+
+    ifstream text("C:\\Users\\MubaTwo\\Desktop\\file\\lab3\\text.txt");//Чтение
+    if (!text) cout << "Ошибка открытия файла text.txt." << endl;
+
+    int i = 0;
+    while (text.get(symbol))
+    {
+        str[i] = symbol;
+        i++;
+    }
+    str[i] = '\0';
+    text.close();
+
+    int lenght = strlen(str); cout << "Количество символов в тексте: " << lenght << endl;//Количество символов всех строк
+
+    Razdelenie(str, lenght);
+    Count_Symbols_Words(str, word, lenght);
+
+    cout << "=======================================" << endl;
+    cout << str;
+    cout << "=======================================" << endl;
+
+    return 0;
+}
