@@ -9,12 +9,12 @@
 using namespace std;
 
 
-void Count_Symbols_Words(char* str, char* word, int lenght)//Ищем самое длинное слово и выводим его на экран
+void Count_Symbols_Words(char* str, char* word, int lenghtStr)//Ищем самое длинное слово и выводим его на экран
 {
     int max = 0;
     int count = 0;
     int ws = 0;
-    for (int i = 0; i < lenght; i++)
+    for (int i = 0; i < lenghtStr; i++)
     {
         if (str[i] == '\n') count = 0;
         if (str[i] != '\n')
@@ -42,16 +42,26 @@ void Count_Symbols_Words(char* str, char* word, int lenght)//Ищем самое
     cout << "Длина слова: " << max << endl << endl;
 }
 
-void Razdelenie(char* str, int lenght)//Разделение строк на слова
+void Razdelenie(char* str, char* str1, int lenghtStr)//Разделение строк на слова
 {
-    for (int i = 0; i < lenght; i++)
+    for (int i = 0; i < lenghtStr; i++)
     {
         if (str[i] == ' ' || str[i] == '?' || str[i] == '!' || str[i] == '.')
         {
             str[i] = '\n';
         }
-
     }
+
+    int j = 0;
+    for (int i = 0; i < lenghtStr; i++, j++)
+    {
+        str1[j] = str[i];
+        if (str[i] == '\n' && str[i + 1] == '\n')
+        {
+            i++;
+        }
+    }
+    str1[j] = '\0';
 }
 
 void main()
@@ -61,6 +71,7 @@ void main()
 
     char symbol;
     char* str = new char[100];
+    char* str1 = new char[100];
     char* word = new char[100];
 
     ifstream text("C:\\Users\\MubaTwo\\Desktop\\file\\lab3\\text.txt");//Чтение
@@ -75,14 +86,14 @@ void main()
     str[i] = '\0';
     text.close();
 
-    int lenght = strlen(str); cout << "Количество символов в тексте: " << lenght << endl;//Количество символов всех строк
+    int lenghtStr = strlen(str); cout << "Количество символов в тексте str: " << lenghtStr << endl;//Количество символов всех строк
 
-    Razdelenie(str, lenght);
-    Count_Symbols_Words(str, word, lenght);
+    Razdelenie(str, str1, lenghtStr);
+    int lenghtStr1 = strlen(str1); cout << "Количество символов в тексте str1: " << lenghtStr1 << endl;
+    Count_Symbols_Words(str, word, lenghtStr);
 
     cout << "=======================================" << endl;
-    cout << str;
+    cout << str1;
     cout << "=======================================" << endl;
 
-    
 }
