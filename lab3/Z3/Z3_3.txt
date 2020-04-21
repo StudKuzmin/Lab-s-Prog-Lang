@@ -1,0 +1,147 @@
+#include <ctime>
+#include <iostream>
+#include <fstream>
+#include <windows.h>
+#include "string"
+#include "stdio.h"
+
+
+using namespace std;
+
+
+
+
+
+
+void sortirovka(char* str2, char* sug1, char* sug2, char* sug3, int lenghtStr2)//Счёт слов  и Сортировка слов по возрастанию
+{
+    int countSug1 = 0;
+    int countSug2 = 0;
+    int countSug3 = 0;
+    int* sort = new int[lenghtStr2];
+    int countWords = 0;
+
+    int i = 0;
+    for (int j = 0; true; i++)//Счёт слов в 1м предложении
+    {
+        sug1[j] = str2[i];
+        if (str2[i] == ' ') countSug1++;
+        j++;
+        if (str2[i] == '\n')
+        {
+            countSug1++;
+            break;
+        }
+    }
+
+    i++;
+
+    for (int j = 0; true; i++)//Счёт слов во 2м предложении
+    {
+        sug2[j] = str2[i];
+        if (str2[i] == ' ') countSug2++;
+        j++;
+        if (str2[i] == '\n')
+        {
+            countSug2++;
+            break;
+        }
+    }
+
+    i++;
+
+    for (int j = 0; true; i++)//Счёт слов в 3м предложении
+    {
+        sug3[j] = str2[i];
+        if (str2[i] == ' ') countSug3++;
+        j++;
+        if (str2[i] == '.')
+        {
+            countSug3++;
+            break;
+        }
+    }
+
+    int* countSug123 = new int[2];
+    countSug123[0] = countSug1;
+    countSug123[1] = countSug2;
+    countSug123[2] = countSug3;
+    for (int i = 0; i < 3; i++) 
+
+    for (int i = 0; i < 3; i++)//Сортировка предложений в цифровом виде
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            if (countSug123[i] > countSug123[i + 1])
+            {
+                swap(countSug123[i], countSug123[i + 1]);
+            }
+        }
+    }
+
+    for (int i = 0; i < 3; i++)
+    cout << "KOL-VO: " << countSug123[i] << endl;
+}
+
+
+void Razdelenie(char* str, char* str1, int lenghtStr)//Разделение строк на слова и обновление массива
+{
+    for (int i = 0; i < lenghtStr; i++)
+    {
+        if (str[i] == ' ' || str[i] == '?' || str[i] == '!' || str[i] == '.')
+        {
+            str[i] = '\n';
+        }
+    }
+
+    int j = 0;
+    for (int i = 0; i < lenghtStr; i++, j++)
+    {
+        str1[j] = str[i];
+        if (str[i] == '\n' && str[i + 1] == '\n')
+        {
+            i++;
+        }
+    }
+    str1[j] = '\0';
+}
+
+void main()
+{
+    setlocale(LC_ALL, "ru");
+    srand(time(0));
+
+    char symbol;
+    char* str = new char[100];
+    char* str1 = new char[100];
+    char* str2 = new char[100];
+    char* sug1 = new char[100];
+    char* sug2 = new char[100];
+    char* sug3 = new char[100];
+
+
+    ifstream text("C:\\Users\\MubaTwo\\Desktop\\file\\lab3\\text.txt");//Чтение
+    if (!text) cout << "Ошибка открытия файла text.txt." << endl;
+
+    int i = 0;
+    while (text.get(symbol))
+    {
+        str[i] = symbol;
+        str2[i] = symbol;
+        i++;
+    }
+    str2[i] = '\0';
+    str[i] = '\0';
+    text.close();
+
+    int lenghtStr = strlen(str); cout << "Количество символов в тексте str: " << lenghtStr << endl;//Количество символов всех строк
+    Razdelenie(str, str1, lenghtStr);//Разделение строк на слова и обновление массива
+    int lenghtStr1 = strlen(str1); cout << "Количество символов в тексте str1: " << lenghtStr1 << endl;
+    int lenghtStr2 = strlen(str2); cout << "Количество символов в тексте str2: " << lenghtStr2 << endl;
+    sortirovka(str2, sug1, sug2, sug3, lenghtStr2);
+
+    cout << "=======================================" << endl;
+    cout << str2 << endl;
+    cout << "=======================================" << endl;
+
+}
