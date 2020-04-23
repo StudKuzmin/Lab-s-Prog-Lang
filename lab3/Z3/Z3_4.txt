@@ -1,0 +1,339 @@
+#include <ctime>
+#include <iostream>
+#include <fstream>
+#include <windows.h>
+#include "string"
+#include "stdio.h"
+
+
+using namespace std;
+
+
+
+
+
+
+void sortirovka(char* str2, char* sug1, char* sug2, char* sug3, int lenghtStr2)//Счёт слов  и Сортировка слов по возрастанию
+{
+    int countSug1 = 0;
+    int countSug2 = 0;
+    int countSug3 = 0;
+    char* sort = new char[lenghtStr2];
+    int countWords = 0;
+
+    int i = 0;
+    for (int j = 0; true; i++)//Счёт слов в 1м предложении
+    {
+        sug1[j] = str2[i];
+        if (str2[i] == ' ') countSug1++;
+        j++;
+        if (str2[i] == '\n')
+        {
+            countSug1++;
+            break;
+        }
+    }
+
+    i++;
+    int i2 = i; //Начало 2й строки
+
+    for (int j = 0; true; i++)//Счёт слов во 2м предложении
+    {
+        sug2[j] = str2[i];
+        if (str2[i] == ' ') countSug2++;
+        j++;
+        if (str2[i] == '\n')
+        {
+            countSug2++;
+            break;
+        }
+    }
+
+    i++;
+    int i3 = i; //Начало 3й строки
+
+    for (int j = 0; true; i++)//Счёт слов в 3м предложении
+    {
+        sug3[j] = str2[i];
+        if (str2[i] == ' ') countSug3++;
+        j++;
+        if (str2[i] == '.')
+        {
+            countSug3++;
+            break;
+        }
+    }
+
+    int j = 0;
+    if (countSug1 < countSug2)
+    {
+        if (countSug3 < countSug1) // порядок 312
+        {
+            for (; true; j++)// Сначала записываем 3ю строку
+            {
+                sort[j] = str2[i3];
+                if (str2[i3] == '\0') 
+                {
+                    break;
+                }
+                i3++;
+            }
+
+            sort[++j] = '\n';
+            int n = 0;
+
+            for (; true; j++) // Записываем 1ю строку
+            {
+                sort[j] = str2[n];
+                if (str2[n] == '\n') 
+                {
+                    break;
+                }
+                n++;
+            }
+            sort[++j] = '\n';
+
+            for (; true; j++) // Записываем 2ю строку
+            {
+                sort[j] = str2[i2];
+                if (str2[i2] == '\n') 
+                {
+                    sort[j] = '\0';
+                    break;
+                }
+                i2++;
+            }
+        }
+
+        else if (countSug3 < countSug2) // 132
+        {
+            for (; true; j++) // Сначала записываем 1ю строку
+            {
+                sort[j] = str2[j];
+                if (str2[j] == '\n')
+                {
+                    break;
+                }
+            }
+            sort[++j] = '\n';
+
+            for (; true; j++) // Записываем 3ю строку
+            {
+                sort[j] = str2[i3];
+                if (str2[i3] == '\0')
+                {
+                    break;
+                }
+                i3++;
+            }
+            sort[++j] = '\n';
+
+            for (; true; j++) // Записываем 2ю строку
+            {
+                sort[j] = str2[i2];
+                if (str2[i2] == '\n')
+                {
+                    sort[j] = '\0';
+                    break;
+                }
+                i2++;
+            }
+        }
+
+        else if (countSug3 > countSug2) // 123
+        {
+            for (; true; j++) // Записываем все строки по порядку
+            {
+                sort[j] = str2[j];
+                if (str2[j] == '\0')
+                {
+                    sort[j] = '\0';
+                    break;
+                }
+            }
+        }
+    }
+
+    if (countSug2 < countSug1)
+    {
+        if (countSug3 < countSug2) // 321
+        {
+            for (; true; j++)// Сначала записываем 3ю строку
+            {
+                sort[j] = str2[i3];
+                if (str2[i3] == '\0') 
+                {
+                    break;
+                }
+                i3++;
+            }
+            sort[++j] = '\n';
+
+            for (; true; j++) // записываем 2ю строку
+            {
+                sort[j] = str2[i2];
+                if (str2[i2] == '\n')
+                {
+                    break;
+                }
+                i2++;
+            }
+
+            sort[++j] = '\n';
+            int n = 0;
+
+            for (; true; j++) // Записываем 1ю строку
+            {
+                sort[j] = str2[n];
+                if (str2[n] == '\n')
+                {
+                    sort[j] = '\0';
+                    break;
+                }
+                n++;
+            }
+
+        }
+
+        else if (countSug3 < countSug1) // 231
+        {
+            for (; true; j++) // Сначала записываем 2ю строку
+            {
+                sort[j] = str2[i2];
+                if (str2[i2] == '\n')
+                {
+                    break;
+                }
+                i2++;
+            }
+            sort[++j] = '\n';
+            i2++;
+
+            for (; true; j++) // Потом 3ю
+            {
+                sort[j] = str2[i2];
+                if (str2[i2] == '\0')
+                {
+                    break;
+                }
+                i2++;
+            }
+            sort[++j] = '\n';
+            int n = 0;
+
+            for (; true; j++) //Потом 1ю
+            {
+                sort[j] = str2[n];
+                if (str2[n] == '\n')
+                {
+                    sort[j] = '\0';
+                    break;
+                }
+                n++;
+            }
+        }
+
+        else if (countSug3 > countSug2) //213
+        {
+            cout << "CYKA" << endl;
+            for (; true; j++) //Сначала записываем 2ю строку
+            {
+                sort[j] = str2[i2];
+                if (str2[i2] == '\n')
+                {
+                    break;
+                }
+                i2++;
+            }
+            sort[++j] = '\n';
+            int n = 0;
+
+            for (; true; j++) //Потом 1ю
+            {
+                sort[j] = str2[n];
+                if (str2[n] == '\n')
+                {
+                    break;
+                }
+                n++;
+            }
+            sort[++j] = '\n';
+            i2++;
+
+            for (; true; j++) //Потом 3ю
+            {
+                sort[j] = str2[i2];
+                if (str2[i2] == '\0')
+                {
+                    sort[j] = '\0';
+                    break;
+                }
+                i2++;
+            }
+        }
+    }
+    cout << sort << endl;
+}
+
+
+void Razdelenie(char* str, char* str1, int lenghtStr)//Разделение строк на слова и обновление массива
+{
+    for (int i = 0; i < lenghtStr; i++)
+    {
+        if (str[i] == ' ' || str[i] == '?' || str[i] == '!' || str[i] == '.')
+        {
+            str[i] = '\n';
+        }
+    }
+
+    int j = 0;
+    for (int i = 0; i < lenghtStr; i++, j++)
+    {
+        str1[j] = str[i];
+        if (str[i] == '\n' && str[i + 1] == '\n')
+        {
+            i++;
+        }
+    }
+    str1[j] = '\0';
+}
+
+void main()
+{
+    setlocale(LC_ALL, "ru");
+    srand(time(0));
+
+    char symbol;
+    char* str = new char[100];
+    char* str1 = new char[100];
+    char* str2 = new char[100];
+    char* sug1 = new char[100];
+    char* sug2 = new char[100];
+    char* sug3 = new char[100];
+
+
+    ifstream text("C:\\Users\\MubaTwo\\Desktop\\file\\lab3\\text.txt");//Чтение
+    if (!text) cout << "Ошибка открытия файла text.txt." << endl;
+
+    int i = 0;
+    while (text.get(symbol))
+    {
+        str[i] = symbol;
+        str2[i] = symbol;
+        i++;
+    }
+    str2[i] = '\0';
+    str[i] = '\0';
+    text.close();
+
+    int lenghtStr = strlen(str); cout << "Количество символов в тексте str: " << lenghtStr << endl;//Количество символов всех строк
+    Razdelenie(str, str1, lenghtStr);//Разделение строк на слова и обновление массива
+    int lenghtStr1 = strlen(str1); cout << "Количество символов в тексте str1: " << lenghtStr1 << endl;
+    int lenghtStr2 = strlen(str2); cout << "Количество символов в тексте str2: " << lenghtStr2 << endl;
+    sortirovka(str2, sug1, sug2, sug3, lenghtStr2);
+
+    cout << "=======================================" << endl;
+    cout << str2 << endl;
+    cout << "=======================================" << endl;
+
+}
