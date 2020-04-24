@@ -84,5 +84,6 @@ void main()
     cout << str;
     cout << "=======================================" << endl;
 
-    
+    delete[] str;
+    delete[] word;
 }

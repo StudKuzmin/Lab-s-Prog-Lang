@@ -125,14 +125,14 @@ void sortirovka(char* str2, char* sug1, char* sug2, char* sug3, int lenghtStr2)/
     string s2 = sug2;
     string s3 = sug3;
 
-    if (counter(sug1) < counter(sug2) && counter(sug2) < counter(sug3)) sort = s1 + '\n' + s2 + '\n' + s3; 
-    if (counter(sug1) < counter(sug3) && counter(sug3) < counter(sug2)) sort = s1 + '\n' + s3 + '\n' + s2;
+    if (counter(sug1) < counter(sug2) && counter(sug2) < counter(sug3)) sort = s1 + '\n' + s2 + '\n' + s3; // 1 < 2 < 3
+    if (counter(sug1) < counter(sug3) && counter(sug3) < counter(sug2)) sort = s1 + '\n' + s3 + '\n' + s2; // 1 < 3 < 2
 
-    if (counter(sug2) < counter(sug1) && counter(sug1) < counter(sug3)) sort = s2 + '\n' + s1 + '\n' + s3;
-    if (counter(sug2) < counter(sug3) && counter(sug3) < counter(sug1)) sort = s2 + '\n' + s3 + '\n' + s1;
+    if (counter(sug2) < counter(sug1) && counter(sug1) < counter(sug3)) sort = s2 + '\n' + s1 + '\n' + s3; // 2 < 1 < 3
+    if (counter(sug2) < counter(sug3) && counter(sug3) < counter(sug1)) sort = s2 + '\n' + s3 + '\n' + s1; // 2 < 3 < 1
 
-    if (counter(sug3) < counter(sug1) && counter(sug1) < counter(sug2)) sort = s3 + '\n' + s1 + '\n' + s2;
-    if (counter(sug3) < counter(sug2) && counter(sug2) < counter(sug1)) sort = s3 + '\n' + s2 + '\n' + s1;
+    if (counter(sug3) < counter(sug1) && counter(sug1) < counter(sug2)) sort = s3 + '\n' + s1 + '\n' + s2; // 3 < 1 < 2
+    if (counter(sug3) < counter(sug2) && counter(sug2) < counter(sug1)) sort = s3 + '\n' + s2 + '\n' + s1; // 3 < 2 < 1
 
 
     cout << endl << endl << "=======================================" << endl << endl;
@@ -151,7 +151,6 @@ void main()
     char* sug2 = new char[100];
     char* sug3 = new char[100];
 
-
     ifstream text("C:\\Users\\MubaTwo\\Desktop\\file\\lab3\\text.txt");//Чтение
     if (!text) cout << "Ошибка открытия файла text.txt." << endl;
 
@@ -169,8 +168,10 @@ void main()
     cout << endl << "=======================================" << endl << endl;
     cout << str2;
 
-
-    
     sortirovka(str2, sug1, sug2, sug3, lenghtStr2);
 
+    delete[] str2;
+    delete[] sug1;
+    delete[] sug2;
+    delete[] sug3;
 }
