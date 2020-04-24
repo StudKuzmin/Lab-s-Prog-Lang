@@ -1,0 +1,176 @@
+#include <ctime>
+#include <iostream>
+#include <fstream>
+#include <windows.h>
+#include "string"
+#include "stdio.h"
+
+
+using namespace std;
+
+
+
+int counter(char* schet) // Функция счёта слов в каждом предложении
+{
+    char* str2 = new char[100];
+    char symbol;
+    int count = 0;
+
+    ifstream text("C:\\Users\\MubaTwo\\Desktop\\file\\lab3\\text.txt");//Чтение
+    if (!text) cout << "Ошибка открытия файла text.txt." << endl;
+
+    int i = 0;
+    while (text.get(symbol))
+    {
+        str2[i] = symbol;
+        i++;
+    }
+    str2[i] = '\0';
+
+    for (int i = 0; true; i++)
+    {
+        if (schet[i] == ' ' && schet[i + 1] == ' ') continue; // Если идут два пробела подряд переходим к следующему элементу
+        if (schet[i] == ' ') count++;
+        if (schet[i] == '.' || schet[i] == '?' || schet[i] == '!')
+        {
+            count++;
+            break;
+        }
+    }
+
+    return count;
+}
+
+void sortirovka(char* str2, char* sug1, char* sug2, char* sug3, int lenghtStr2)//Счёт слов  и Сортировка слов по возрастанию
+{
+    int countSug1 = 0;
+    int countSug2 = 0;
+    int countSug3 = 0;
+    int countWords = 0;
+
+    int i = 0;
+    for (int j = 0; true; i++)//Счёт слов в 1м предложении
+    {
+        if (str2[i] == ' ' && str2[i + 1] == ' ') continue; // Если идут два пробела подряд переходим к следующему элементу
+        if (str2[i] == ' ') countSug1++;
+        if (str2[i] == '\n')
+        {
+            countSug1++;
+            break;
+        }
+    }
+
+    i++;
+    int i2 = i; //Начало 2й строки
+
+    for (int j = 0; true; i++)//Счёт слов во 2м предложении
+    {
+        if (str2[i] == ' ' && str2[i + 1] == ' ') continue; // Если идут два пробела подряд переходим к следующему элементу
+        if (str2[i] == ' ') countSug2++;
+        j++;
+        if (str2[i] == '\n')
+        {
+            countSug2++;
+            break;
+        }
+    }
+
+    i++;
+    int i3 = i; //Начало 3й строки
+
+    for (int j = 0; true; i++)//Счёт слов в 3м предложении
+    {
+        if (str2[i] == ' ' && str2[i + 1] == ' ') continue; // Если идут два пробела подряд переходим к следующему элементу
+        if (str2[i] == ' ') countSug3++;
+        j++;
+        if (str2[i] == '.')
+        {
+            countSug3++;
+            break;
+        }
+    }
+
+    for (int i = 0; true; i++) // Копируем 1е предложение в массив
+    {
+        sug1[i] = str2[i];
+        if (str2[i] == '\n')
+        {
+            sug1[i] = '\0';
+            break;
+        }
+    }
+
+    for (int i = 0; true; i++, i2++) // Копируем 2е предложение в массив
+    {
+        sug2[i] = str2[i2];
+        if (str2[i2] == '\n')
+        {
+            sug2[i] = '\0';
+            break;
+        }
+    }
+
+    for (int i = 0; true; i++, i3++) // Копируем 3е предложение в массив
+    {
+        sug3[i] = str2[i3];
+        if (str2[i3] == '\0')
+        {
+            sug3[i] = '\0';
+            break;
+        }
+    }
+
+    string sort;
+    string s1 = sug1;
+    string s2 = sug2;
+    string s3 = sug3;
+
+    if (counter(sug1) < counter(sug2) && counter(sug2) < counter(sug3)) sort = s1 + '\n' + s2 + '\n' + s3; 
+    if (counter(sug1) < counter(sug3) && counter(sug3) < counter(sug2)) sort = s1 + '\n' + s3 + '\n' + s2;
+
+    if (counter(sug2) < counter(sug1) && counter(sug1) < counter(sug3)) sort = s2 + '\n' + s1 + '\n' + s3;
+    if (counter(sug2) < counter(sug3) && counter(sug3) < counter(sug1)) sort = s2 + '\n' + s3 + '\n' + s1;
+
+    if (counter(sug3) < counter(sug1) && counter(sug1) < counter(sug2)) sort = s3 + '\n' + s1 + '\n' + s2;
+    if (counter(sug3) < counter(sug2) && counter(sug2) < counter(sug1)) sort = s3 + '\n' + s2 + '\n' + s1;
+
+
+    cout << endl << endl << "=======================================" << endl << endl;
+    cout << sort;
+    cout << endl << endl << "=======================================" << endl << endl;
+}
+
+void main()
+{
+    setlocale(LC_ALL, "ru");
+    srand(time(0));
+
+    char symbol;
+    char* str2 = new char[100];
+    char* sug1 = new char[100];
+    char* sug2 = new char[100];
+    char* sug3 = new char[100];
+
+
+    ifstream text("C:\\Users\\MubaTwo\\Desktop\\file\\lab3\\text.txt");//Чтение
+    if (!text) cout << "Ошибка открытия файла text.txt." << endl;
+
+    int i = 0;
+    while (text.get(symbol))
+    {
+        str2[i] = symbol;
+        i++;
+    }
+    str2[i] = '\0';
+    text.close();
+
+    int lenghtStr2 = strlen(str2); cout << "Количество символов в тексте str2: " << lenghtStr2 << endl;
+
+    cout << endl << "=======================================" << endl << endl;
+    cout << str2;
+
+
+    
+    sortirovka(str2, sug1, sug2, sug3, lenghtStr2);
+
+}
