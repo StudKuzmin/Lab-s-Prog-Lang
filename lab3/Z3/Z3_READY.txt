@@ -120,19 +120,207 @@ void sortirovka(char* str2, char* sug1, char* sug2, char* sug3, int lenghtStr2)/
         }
     }
 
-    string sort;
-    string s1 = sug1;
-    string s2 = sug2;
-    string s3 = sug3;
+    char* sort = new char[100];
+    i = 0;
 
-    if (counter(sug1) < counter(sug2) && counter(sug2) < counter(sug3)) sort = s1 + '\n' + s2 + '\n' + s3; // 1 < 2 < 3
-    if (counter(sug1) < counter(sug3) && counter(sug3) < counter(sug2)) sort = s1 + '\n' + s3 + '\n' + s2; // 1 < 3 < 2
+    if (counter(sug1) < counter(sug2) && counter(sug2) < counter(sug3)) // 1 < 2 < 3
+    {
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug1[j];
+            if (sug1[j] == '\0')
+            {
+                sort[i] = '\n';
+                break;
+            }
+        }
+        i++;
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug2[j];
+            if (sug2[j] == '\0')
+            {
+                sort[i] = '\n';
+                break;
+            }
+        }
+        i++;
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug3[j];
+            if (sug3[j] == '\0')
+            {
+                sort[i] = '\0';
+                break;
+            }
+        }
+    }
 
-    if (counter(sug2) < counter(sug1) && counter(sug1) < counter(sug3)) sort = s2 + '\n' + s1 + '\n' + s3; // 2 < 1 < 3
-    if (counter(sug2) < counter(sug3) && counter(sug3) < counter(sug1)) sort = s2 + '\n' + s3 + '\n' + s1; // 2 < 3 < 1
+    if (counter(sug1) < counter(sug3) && counter(sug3) < counter(sug2))  // 1 < 3 < 2
+    {
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug1[j];
+            if (sug1[j] == '\0')
+            {
+                sort[i] = '\n';
+                break;
+            }
+        }
+        i++;
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug3[j];
+            if (sug3[j] == '\0')
+            {
+                sort[i] = '\n';
+                break;
+            }
+        }
+        i++;
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug2[j];
+            if (sug2[j] == '\0')
+            {
+                sort[i] = '\0';
+                break;
+            }
+        }
+    }
 
-    if (counter(sug3) < counter(sug1) && counter(sug1) < counter(sug2)) sort = s3 + '\n' + s1 + '\n' + s2; // 3 < 1 < 2
-    if (counter(sug3) < counter(sug2) && counter(sug2) < counter(sug1)) sort = s3 + '\n' + s2 + '\n' + s1; // 3 < 2 < 1
+
+    if (counter(sug2) < counter(sug1) && counter(sug1) < counter(sug3))  // 2 < 1 < 3
+    {
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug2[j];
+            if (sug2[j] == '\0')
+            {
+                sort[i] = '\n';
+                break;
+            }
+        }
+        i++;
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug1[j];
+            if (sug1[j] == '\0')
+            {
+                sort[i] = '\n';
+                break;
+            }
+        }
+        i++;
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug3[j];
+            if (sug3[j] == '\0')
+            {
+                sort[i] = '\0';
+                break;
+            }
+        }
+    }
+
+    if (counter(sug2) < counter(sug3) && counter(sug3) < counter(sug1))  // 2 < 3 < 1
+    {
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug2[j];
+            if (sug2[j] == '\0')
+            {
+                sort[i] = '\n';
+                break;
+            }
+        }
+        i++;
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug3[j];
+            if (sug3[j] == '\0')
+            {
+                sort[i] = '\n';
+                break;
+            }
+        }
+        i++;
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug1[j];
+            if (sug1[j] == '\0')
+            {
+                sort[i] = '\0';
+                break;
+            }
+        }
+    }
+
+    if (counter(sug3) < counter(sug1) && counter(sug1) < counter(sug2))  // 3 < 1 < 2
+    {
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug3[j];
+            if (sug3[j] == '\0')
+            {
+                sort[i] = '\n';
+                break;
+            }
+        }
+        i++;
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug1[j];
+            if (sug1[j] == '\0')
+            {
+                sort[i] = '\n';
+                break;
+            }
+        }
+        i++;
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug2[j];
+            if (sug2[j] == '\0')
+            {
+                sort[i] = '\0';
+                break;
+            }
+        }
+    }
+
+    if (counter(sug3) < counter(sug2) && counter(sug2) < counter(sug1))  // 3 < 2 < 1
+    {
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug3[j];
+            if (sug3[j] == '\0')
+            {
+                sort[i] = '\n';
+                break;
+            }
+        }
+        i++;
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug2[j];
+            if (sug2[j] == '\0')
+            {
+                sort[i] = '\n';
+                break;
+            }
+        }
+        i++;
+        for (int j = 0; true; i++, j++)
+        {
+            sort[i] = sug1[j];
+            if (sug1[j] == '\0')
+            {
+                sort[i] = '\0';
+                break;
+            }
+        }
+    }
 
 
     cout << endl << endl << "=======================================" << endl << endl;
