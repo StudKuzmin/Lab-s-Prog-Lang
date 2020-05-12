@@ -1,0 +1,39 @@
+#include <iostream>
+#include <ctime>
+
+using namespace std;
+
+int RekFact(int n) // Рекурсивная функция
+{
+	if (n == 1) return n;
+	return RekFact(n * (n - 1));
+	
+}
+
+int Fact() // Не рекурсивная функция
+{
+
+	return 0;
+}
+
+int main()
+{
+	setlocale(LC_ALL, "ru"); srand(time(NULL));
+
+	int n;
+	cout << "Введите число, факториал которого вы хотите найти: "; cin >> n;
+
+	if (n == 0 || n == 1) cout << 1 << endl; // Частный случай
+	if (n == 2) cout << 2 << endl;           // Частный случай
+
+
+	while (n < 0)
+	{
+		if (n >= 0) break;
+		cout << "Факториал определён только для целых неотрицательных чисел. Введите число ещё раз: "; cin >> n;
+	}
+
+	cout << RekFact(n) << endl;
+
+	return 0;
+}
