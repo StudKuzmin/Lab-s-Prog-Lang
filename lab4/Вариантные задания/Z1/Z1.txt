@@ -1,0 +1,38 @@
+#include <iostream>
+#include <ctime>
+
+using namespace std;
+
+ int sum = 0;
+
+int aver(int* A, int i, int n)
+{
+	if (i >= n) return sum / n; // Если индекс элемента >= размерности массива
+	sum = sum + A[i];
+	return aver(A, ++i, n);
+}
+
+
+int main()
+{
+	setlocale(LC_ALL, "ru"); srand(time(NULL));
+	
+	int n;
+	int i = 0;
+
+	cout << "Введите размер массива: "; cin >> n;
+
+	int* A = new int[n];
+
+	for (int i = 0; i < n; i++)
+	{
+		A[i] = rand()% 10; // [-10, 10]
+		printf("A[%d] = %d\n", i, A[i]);
+	}
+
+	printf("Среднее значение %d элементов массива A = sum/n = %d\n\n", n, aver(A, i, n));
+
+	delete[] A;
+
+	return 0;
+}
