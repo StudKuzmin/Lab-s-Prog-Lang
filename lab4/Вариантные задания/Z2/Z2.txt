@@ -1,0 +1,26 @@
+#include <iostream>
+#include <ctime>
+
+using namespace std;
+
+
+
+int sum(int a, int b)
+{
+	if (a == 0) return b;
+
+	return sum(a - 1, b) + 1; // b + 1, пока a != 0
+}
+
+int main()
+{
+	setlocale(LC_ALL, "ru"); srand(time(NULL));
+	
+	int a, b;
+
+	cout << "Введите числа a, b:" << endl; cin >> a >> b;
+
+	cout << sum(a, b) << endl;
+
+	return 0;
+}
