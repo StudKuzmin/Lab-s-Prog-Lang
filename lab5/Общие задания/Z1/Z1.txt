@@ -1,0 +1,38 @@
+#include <iostream>
+#include <ctime>
+
+using namespace std;
+
+struct Videogame
+{
+	const char* StudioName;	// Название студии
+	const char* DirectorName; // Имя директора
+	float Budget; // Бюджет
+	int Year; // Количество выпущенных игр
+	int NumberOfEmployees; // Количество сотрудников
+};
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	Videogame Mario;
+
+	cout << "Mario" << endl << endl;
+	Mario.StudioName = "Nintendo";				/**/ cout << "Название студии:\t\t* " << Mario.StudioName << endl;
+	Mario.DirectorName = "Shigeru Miyamoto";	/**/ cout << "Имя директора:\t\t\t* " << Mario.DirectorName << endl;
+	Mario.Budget = 1234.56;						/**/ cout << "Бюджет:\t\t\t\t* " << Mario.Budget << "$" << endl;
+	Mario.Year = 1985;							/**/ cout << "Дата выхода:\t\t\t* " << Mario.Year << endl;
+	Mario.NumberOfEmployees = 10;				/**/ cout << "Количество сотрудников:\t\t* " << Mario.NumberOfEmployees << endl;
+
+	Videogame Warcraft;
+	cout << endl;
+
+	cout << "Warcraft" << endl << endl;
+	Warcraft.StudioName = "Blizzard";			/**/ cout << "Название студии:\t\t* " << Warcraft.StudioName << endl;
+	Warcraft.DirectorName = "Michael Morheim";	/**/ cout << "Имя директора:\t\t\t* " << Warcraft.DirectorName << endl;
+	Warcraft.Budget = 1234.56;					/**/ cout << "Бюджет:\t\t\t\t* " << Warcraft.Budget << "$" << endl;
+	Warcraft.Year = 1994;						/**/ cout << "Дата выхода:\t\t\t* " << Warcraft.Year << endl;
+	Warcraft.NumberOfEmployees = 10;			/**/ cout << "Количество сотрудников:\t\t* " << Warcraft.NumberOfEmployees << endl;
+
+}
