@@ -35,4 +35,5 @@ int main()
 	Warcraft.Year = 1994;						/**/ cout << "Дата выхода:\t\t\t* " << Warcraft.Year << endl;
 	Warcraft.NumberOfEmployees = 10;			/**/ cout << "Количество сотрудников:\t\t* " << Warcraft.NumberOfEmployees << endl;
 
+	return 0;
 }
