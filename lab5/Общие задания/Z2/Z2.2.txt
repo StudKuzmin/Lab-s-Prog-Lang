@@ -1,0 +1,88 @@
+#include <iostream>
+#include <ctime>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+void rndm(string cvet[100], string imya[100], int integer[100], int *count1, int *count2, int *count3)
+{
+	ifstream clr("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\color.txt"); if (!clr) cout << "Ошибка открытия файла color.txt" << endl;
+	ifstream nmbr("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\int.txt"); if (!nmbr) cout << "Ошибка открытия файла int.txt" << endl;
+	ifstream nm("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\name.txt"); if (!nm) cout << "Ошибка открытия файла name.txt" << endl;
+
+	for (int i = 0; !clr.eof(); i++)
+	{
+		clr >> cvet[i];
+		*count1 = i + 1; // + 1, чтобы array[rand() % count1], а не array[rand() % count1 + 1]
+	}
+
+	for (int i = 0; !nm.eof(); i++)
+	{
+		nm >> imya[i];
+		*count2 = i + 1;
+	}
+
+	for (int i = 0; !nmbr.eof(); i++)
+	{
+		nmbr >> integer[i];
+		*count3 = i + 1;
+	}
+	
+	clr.close();
+	nmbr.close();
+	nm.close();
+}
+
+struct thing
+{
+	string color;
+	string name;
+	int number = 0;
+	int year = 0;
+	int group = 0;
+};
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	int n; cout << "Введите количество объектов: "; cin >> n; cout << endl;
+
+	cout << "#########################" << endl;
+
+	thing* str = new thing [n];
+
+	string cvet[100]; string imya[100]; int integer[100];
+	int count1 = 0; int count2 = 0; int count3 = 0;
+	rndm(cvet, imya, integer, &count1, &count2, &count3); // стринговый массив, стринговый массив, целочисленный массив, адреса переменных-счётчиков.
+	
+	
+
+	ifstream clr("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\color.txt"); if (!clr) cout << "Ошибка открытия файла color.txt" << endl;
+	ifstream nmbr("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\int.txt"); if (!nmbr) cout << "Ошибка открытия файла int.txt" << endl;
+	ifstream nm("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\name.txt"); if (!nm) cout << "Ошибка открытия файла name.txt" << endl;
+
+	for (int i = 0; i < n; i++)
+	{
+		str[i].color = cvet[rand() % count1]; str[i].name = imya[rand() % count2]; str[i].number = integer[rand() % count3]; str[i].year = integer[rand() % count3]; str[i].group = integer[rand() % count3];
+		cout << "\nОбъект " << i << ":" << endl << endl;
+		cout << "Цвет: " << str[i].color << endl;
+		cout << "Имя: " << str[i].name << endl;
+		cout << "Номер: " << str[i].number << endl;
+		cout << "Год: " << str[i].year << endl;
+		cout << "Группа: " << str[i].group << endl;
+
+	}
+	
+	clr.close();
+	nmbr.close();
+	nm.close();
+
+	delete[] str;
+	delete[] cvet;
+	delete[] imya;
+	delete[] integer;
+
+	return 0;
+}
