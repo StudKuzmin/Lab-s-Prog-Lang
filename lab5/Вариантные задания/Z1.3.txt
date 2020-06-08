@@ -1,0 +1,167 @@
+#include <iostream>
+#include <ctime>
+#include <fstream>
+#include <string>
+#include <windows.h>
+
+using namespace std;
+
+
+
+
+struct bus
+{
+	int bus_number;		// Номер автобуса
+	int route_number;	// Номер маршрута
+	int time;			// Продолжительность 1 круга
+	string FIO;			// ФИО
+
+};
+
+void inf_bus(int* bs_nmbr, int* rt_nmbr, int* tm, char** F, bus* mas_bus) // Функция вывода информации об автобусах на экран
+{
+	ifstream read_bus_number("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\Park\\Номера автобусов.txt"); if (!read_bus_number) cout << "Ошибка открытия файла Номера автобусов.txt" << endl;
+	ifstream read_route_number("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\Park\\Номера маршрутов.txt"); if (!read_route_number) cout << "Ошибка открытия файла Номера маршрутов.txt" << endl;
+	ifstream read_time("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\Park\\Продолжительность.txt"); if (!read_time) cout << "Ошибка открытия файла Продолжительность.txt" << endl;
+	ifstream read_FIO("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\Park\\ФИО водителей.txt"); if (!read_FIO) cout << "Ошибка открытия файла ФИО водителей.txt" << endl;
+	int i = 0; int j = 0; char symbol; char str[255]; int size = _msize(F) / sizeof(int);
+
+	for (int i = 0; i < size; i++) // Считываем номера автобусов.txt в массив bs_nmbr
+	{
+		read_bus_number >> bs_nmbr[i];
+	}
+
+	for (int i = 0; i < size; i++) // Считываем номера маршрутов.txt в массив rt_nmbr
+	{
+		read_route_number >> rt_nmbr[i];
+	}
+
+	for (int i = 0; i < size; i++) // Считываем Продолжительность.txt в массив tm
+	{
+		read_time >> tm[i];
+	}
+
+	for (int i = 0; i < size; i++) // Считываем ФИО водителей.txt в массив F
+	{
+		read_FIO >> F[i];
+	}
+
+
+	read_bus_number.close();
+	read_route_number.close();
+	read_time.close();
+	read_FIO.close();
+
+	char c = 'a';
+	char* srt = new char[size];
+	for (int i = 0; i < size; i++)
+	{
+		cout << endl << "Автобус № " << i + 1 << endl;
+		mas_bus[i].bus_number = bs_nmbr[rand() % size]; cout << "Номер автобуса:\t\t\t " << mas_bus[i].bus_number << endl;
+		mas_bus[i].route_number = rt_nmbr[rand() % size]; cout << "Номер Маршрута:\t\t\t " << mas_bus[i].route_number << endl;
+		mas_bus[i].time = tm[rand() % size]; cout << "Продолжительность 1 круга:\t " << mas_bus[i].time << "m." << endl;
+		mas_bus[i].FIO = F[rand() % size]; cout << "ФИО водителя:\t\t\t " << mas_bus[i].FIO << endl;
+	}
+
+	ofstream record_bus_number("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\Park\\rec Номера автобусов.txt"); if (!record_bus_number) cout << "Ошибка записи файла rec Номера автобусов.txt" << endl;
+	ofstream record_route_number("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\Park\\rec Номера маршрутов.txt"); if (!record_route_number) cout << "Ошибка записи файла rec Номера маршрутов.txt" << endl;
+	ofstream record_time("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\Park\\rec Продолжительность.txt"); if (!record_time) cout << "Ошибка записи файла rec Продолжительность.txt" << endl;
+	ofstream record_FIO("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\Park\\rec ФИО водителей.txt"); if (!record_FIO) cout << "Ошибка записи файла rec ФИО водителей.txt" << endl;
+
+	for (int i = 0; i < size; i++) // Записываем текущие данные в новые файлы
+	{
+		record_bus_number << mas_bus[i].bus_number << endl;
+		record_route_number << mas_bus[i].route_number << endl;
+		record_time << mas_bus[i].time << endl;
+		record_FIO << mas_bus[i].FIO << endl;
+	}
+
+	record_bus_number.close();
+	record_route_number.close();
+	record_time.close();
+	record_FIO.close();
+}
+
+void petrov_route(int f, bus* mas_bus) // Функция, которая ищет маршруты Петрова
+{
+	int count = 0;
+
+	for (int i = 0; i < f; i++)
+	{
+		if (mas_bus[i].FIO == "Petrov_Ivan_Alekseevich")
+		{
+			cout << "Маршрут(ы) Петрова: " << mas_bus[i].route_number << endl;
+			count++;
+		}
+		if (i == f - 1 && count == 0) cout << "Нет водителя с фамилией Петров." << endl;
+	}
+
+}
+
+void long_route(int f, bus* mas_bus) // Выводим информацию о всех автобусах с длинными маршрутами и сортируем данные по фамилии водителя
+{
+	int* m = new int[f]; // Массив количества автобусов(нумерация)
+	for (int i = 0; i < f; i++)
+	{
+		m[i] = i + 1;
+	}
+
+	for (int i = 0; i < f; i++)		 // Сортируем данные по фамилии водителей по возрастанию
+	{
+		for (int i = 0; i < f - 1; i++)
+		{
+			if (mas_bus[i].FIO > mas_bus[i + 1].FIO) // Если "данный" чаровый элемент > "следующего" чарового элемента, меняем все данные местами.
+			{
+				swap(mas_bus[i].FIO, mas_bus[i + 1].FIO);
+				swap(mas_bus[i].route_number, mas_bus[i + 1].route_number);
+				swap(mas_bus[i].bus_number, mas_bus[i + 1].bus_number);
+				swap(mas_bus[i].time, mas_bus[i + 1].time);
+				swap(m[i], m[i + 1]);
+			}
+		}
+	}
+
+	for (int i = 0; i < f; i++)
+	{
+		if (mas_bus[i].time > 60) // Если продолжительность 1круга > 60 минут, выводим данные на экран
+		{
+			cout << endl << "Автобус № " << m[i] << endl;
+			cout << "Номер автобуса:\t\t\t " << mas_bus[i].bus_number << endl;
+			cout << "Номер Маршрута:\t\t\t " << mas_bus[i].route_number << endl;
+			cout << "Продолжительность 1 круга:\t " << mas_bus[i].time << "m." << endl;
+			cout << "ФИО водителя:\t\t\t " << mas_bus[i].FIO << endl;
+		}
+	}
+
+}
+
+int main()
+{
+	setlocale(LC_ALL, "ru"); srand(time(0));
+	int f = 1 + rand() % 15;			// Ограничиваем количество автобусов до 15
+	cout << "Размер: " << f << endl;
+
+	bus* mas_bus = new bus[f];			// Создаём массив структур
+
+	int* bs_nmbr = new int[f]; int* rt_nmbr = new int[f]; int* tm = new int[f]; char** F = new char* [f]; // Отдельные массивы для каждого файла
+	for (int i = 0; i < f; i++)
+	{
+		F[i] = new char[100];
+	}
+
+	inf_bus(bs_nmbr, rt_nmbr, tm, F, mas_bus);	// Функция вывода информации об автобусах на экран
+	cout << "\n######################################################\n\n";
+	petrov_route(f, mas_bus);					// Функция, которая ищет маршруты Петрова. Вывод результата на экран.
+	cout << "\n######################################################\n\n";
+	long_route(f, mas_bus);						// Функция сортировки данных по фамилии водителей. Вывод результата на экран
+
+
+
+	delete[] bs_nmbr;
+	delete[] rt_nmbr;
+	delete[] tm;
+	delete[] F;
+	delete[] mas_bus;
+
+	return 0;
+}
