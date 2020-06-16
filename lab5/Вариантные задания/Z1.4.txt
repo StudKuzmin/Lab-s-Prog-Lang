@@ -1,0 +1,130 @@
+#include <iostream>
+#include <ctime>
+#include <fstream>
+#include <string>
+#include <windows.h>
+
+using namespace std;
+
+
+
+
+struct bus
+{
+	int bus_number;		// Номер автобуса
+	int route_number;	// Номер маршрута
+	int time;			// Продолжительность 1 круга
+	string FIO;			// ФИО
+
+};
+
+void inf_bus(int* bs_nmbr, int* rt_nmbr, int* tm, char** F, bus* mas_bus, int f) // Функция вывода информации об автобусах на экран
+{
+	ifstream fin("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\Park\\Info.txt"); if (!fin) cout << "Ошибка открытия файла Info.txt" << endl;
+
+	char symbol; int i = 0; int j = 0;
+	char* str = new char[1000];
+
+	while (fin.get(symbol))
+	{
+		str[i] = symbol; cout << str[i];
+		i++;
+	}
+	
+	cout << endl;
+	ifstream fin2("C:\\Users\\MubaTwo\\Desktop\\file\\lab5\\Park\\Info2.txt"); if (!fin2) cout << "Ошибка открытия файла Info2.txt" << endl;
+
+
+	for (int i = 0; i < f; i++) // Считываем номера автобусов.txt в массив bs_nmbr
+	{
+		fin2 >> bs_nmbr[i]; cout << bs_nmbr[i] << endl;
+	}
+
+
+
+	fin.close();
+}
+
+void petrov_route(int f, bus* mas_bus) // Функция, которая ищет маршруты Петрова
+{
+	int count = 0;
+
+	for (int i = 0; i < f; i++)
+	{
+		if (mas_bus[i].FIO == "Petrov_Ivan_Alekseevich")
+		{
+			cout << "Маршрут(ы) Петрова: " << mas_bus[i].route_number << endl;
+			count++;
+		}
+		if (i == f - 1 && count == 0) cout << "Нет водителя с фамилией Петров." << endl;
+	}
+
+}
+
+void long_route(int f, bus* mas_bus) // Выводим информацию о всех автобусах с длинными маршрутами и сортируем данные по фамилии водителя
+{
+	int* m = new int[f]; // Массив количества автобусов(нумерация)
+	for (int i = 0; i < f; i++)
+	{
+		m[i] = i + 1;
+	}
+
+	for (int i = 0; i < f; i++)		 // Сортируем данные по фамилии водителей по возрастанию
+	{
+		for (int i = 0; i < f - 1; i++)
+		{
+			if (mas_bus[i].FIO > mas_bus[i + 1].FIO) // Если "данный" чаровый элемент > "следующего" чарового элемента, меняем все данные местами.
+			{
+				swap(mas_bus[i].FIO, mas_bus[i + 1].FIO);
+				swap(mas_bus[i].route_number, mas_bus[i + 1].route_number);
+				swap(mas_bus[i].bus_number, mas_bus[i + 1].bus_number);
+				swap(mas_bus[i].time, mas_bus[i + 1].time);
+				swap(m[i], m[i + 1]);
+			}
+		}
+	}
+
+	for (int i = 0; i < f; i++)
+	{
+		if (mas_bus[i].time > 60) // Если продолжительность 1круга > 60 минут, выводим данные на экран
+		{
+			cout << endl << "Автобус № " << m[i] << endl;
+			cout << "Номер автобуса:\t\t\t " << mas_bus[i].bus_number << endl;
+			cout << "Номер Маршрута:\t\t\t " << mas_bus[i].route_number << endl;
+			cout << "Продолжительность 1 круга:\t " << mas_bus[i].time << "m." << endl;
+			cout << "ФИО водителя:\t\t\t " << mas_bus[i].FIO << endl;
+		}
+	}
+
+}
+
+int main()
+{
+	setlocale(LC_ALL, "ru"); srand(time(0));
+	int f = 1 + rand() % 15;			// Ограничиваем количество автобусов до 15
+	cout << "Размер: " << f << endl;
+
+	bus* mas_bus = new bus[f];			// Создаём массив структур
+
+	int* bs_nmbr = new int[f]; int* rt_nmbr = new int[f]; int* tm = new int[f]; char** F = new char* [f]; // Отдельные массивы для каждого файла
+	for (int i = 0; i < f; i++)
+	{
+		F[i] = new char[100];
+	}
+
+	inf_bus(bs_nmbr, rt_nmbr, tm, F, mas_bus, f);	// Функция вывода информации об автобусах на экран
+	cout << "\n######################################################\n\n";
+	petrov_route(f, mas_bus);					// Функция, которая ищет маршруты Петрова. Вывод результата на экран.
+	cout << "\n######################################################\n\n";
+	long_route(f, mas_bus);						// Функция сортировки данных по фамилии водителей. Вывод результата на экран
+
+
+
+	delete[] bs_nmbr;
+	delete[] rt_nmbr;
+	delete[] tm;
+	delete[] F;
+	delete[] mas_bus;
+
+	return 0;
+}
